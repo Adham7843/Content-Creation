@@ -41,3 +41,10 @@ data/processed/
 # Harness outputs (large generated media)
 harnesses/*/output/
 harnesses/*/__pycache__/
+
+# Brand assets (large media files)
+brands/*/assets/*.mp4
+brands/*/assets/*.svg
+brands/*/assets/*.png
+brands/*/assets/*.jpg
+brands/*/output/

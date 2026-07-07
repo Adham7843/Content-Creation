@@ -6,9 +6,10 @@ This repository is a **PROJECTOR-managed** business unit under `SAAS_Businesses/
 
 | Component | Type | Deploy To |
 |-----------|------|-----------|
+| `brands/_template/` | Brand template | `brands/` |
 | `harnesses/marketing-video-harness/` | Harness | `harnesses/` |
 | `harnesses/meme-video-harness/` | Harness | `harnesses/` |
-| `templates/` | Templates | `templates/` |
+| `templates/` | Global templates | `templates/` |
 | `agents/_template/` | Agent template | `agents/` |
 | `config/` | Config | `config/` |
 | `opencode.json` | Agent config | Root |

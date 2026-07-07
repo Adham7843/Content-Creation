@@ -4,12 +4,14 @@
 
 ```
 Content-Creation/
+├── brands/                     ← Per-brand content configurations
+│   └── _template/              → Brand template: brand.yaml, templates/, assets/, agents/
 ├── harnesses/                  ← Standalone content pipelines (copied from mothra-harnesses)
 │   ├── marketing-video-harness/  → 5-stage: prompt → spec → HTML → render → batch → export
 │   └── meme-video-harness/       → 5-stage: source → clip → meme → batch → export
 ├── agents/                     ← Opencode agents for content generation
 │   └── _template/              → Template for new content agents
-├── templates/                  ← Reusable content blueprints
+├── templates/                  ← Global default content blueprints
 │   ├── video/                  → Script structures, storyboards, shot lists
 │   ├── social/                 → Platform-specific post templates
 │   ├── blog/                   → Blog post frameworks, SEO outlines
@@ -35,13 +37,15 @@ Content-Creation/
 
 ## Design Principles
 
-1. **Harnesses are standalone** — Each harness in `harnesses/` is a complete, self-contained pipeline with its own README, tests, and opencode.json. They can be used independently or orchestrated from the root.
+1. **Brands are first-class** — Each brand/client has its own directory under `brands/` with brand.yaml (voice, visual identity, config), brand-specific templates, assets, and output. Brands override global defaults.
 
-2. **Templates are reusable** — The `templates/` directory is the shared library of content blueprints. Every template uses a consistent format and can be filled in programmatically or manually.
+2. **Harnesses are standalone** — Each harness in `harnesses/` is a complete, self-contained pipeline with its own README, tests, and opencode.json. They can be used independently or orchestrated from the root.
 
-3. **Agents extend the system** — Opencode agents in `agents/` provide LLM-powered interfaces to the harnesses and templates. They read `AGENT.md` at the root for behavior.
+3. **Templates cascade** — Template resolution: `brands/[brand]/templates/` first, then `templates/` as fallback. Brand templates override global ones.
 
-4. **PROJECTOR-deployable** — The entire Content-Creation system can be deployed to any client project via `project-manifest.json` and the deploy script (from SaaS-Security-Auditor's PROJECTOR system).
+4. **Agents extend the system** — Opencode agents in `agents/` provide LLM-powered interfaces to the harnesses and templates. They read `AGENT.md` at the root for behavior and check `brands/` for brand context.
+
+5. **PROJECTOR-deployable** — The entire Content-Creation system can be deployed to any client project via `project-manifest.json` and the deploy script (from SaaS-Security-Auditor's PROJECTOR system).
 
 ## External Dependencies
 

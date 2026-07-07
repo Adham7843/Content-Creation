@@ -6,9 +6,10 @@
 
 | Area | Description |
 |------|-------------|
+| `brands/` | Per-brand content configs, templates, and assets (voice, style, overrides) |
 | `harnesses/` | Production-ready video & content pipelines (marketing videos, meme videos) |
 | `agents/` | Opencode agents for content generation & management |
-| `templates/` | Reusable content templates (video, social, blog, email, ad copy, scripts) |
+| `templates/` | Global default content templates (video, social, blog, email, ad copy, scripts) |
 | `scripts/` | CLI tools for content creation workflows |
 | `config/` | Shared configuration for all tools |
 | `docs/` | Usage guides, style guides, best practices |
@@ -39,6 +40,28 @@ python pipeline.py "https://youtube.com/watch?v=VIDEO" --style brainrot --clips 
 | Email | `templates/email/` | Marketing emails, newsletters, drip campaigns |
 | Ad Copy | `templates/ad-copy/` | Facebook Ads, Google Ads, native ads |
 | Scripts | `templates/script/` | Video scripts, podcast scripts, webinar scripts |
+
+## Brands
+
+Each brand (client/project) gets its own directory under `brands/`:
+
+```
+brands/your-brand/
+├── brand.yaml          ← Voice, colors, content config, harness overrides
+├── templates/          ← Brand-specific templates (override global ones)
+├── agents/             ← Brand-specific agent configs
+├── assets/             ← Logos, fonts, brand assets
+├── harnesses/          ← Brand-specific harness configs
+└── output/             ← Generated content for this brand
+```
+
+Template resolution: brand overrides first (`brands/*/templates/`), then global (`templates/`).
+
+```bash
+# Create a new brand
+Copy-Item -Path brands/_template -Destination brands/my-client -Recurse
+# Then edit brands/my-client/brand.yaml
+```
 
 ## Quick Start
 

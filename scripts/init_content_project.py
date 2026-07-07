@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 """
-Content-Creation Project Initializer
+Content-Creation Project & Brand Initializer
 
-Creates a new content project directory with:
-- Copied template structures
-- Video harness integrations
-- Basic config
+Creates new content projects or brands from templates.
+Zero external dependencies -- stdlib only.
 
 Usage:
-    python scripts/init_content_project.py --name "my-content-project" --type video
-    python scripts/init_content_project.py --name "client-blog" --type blog
+    # Create a content project
+    python scripts/init_content_project.py --name "my-project" --type full
+    
+    # Create a brand (from brands/_template/)
+    python scripts/init_content_project.py --brand "client-name"
+    
+    # Create a brand with custom voice and color
+    python scripts/init_content_project.py --brand "client-name" --voice humorous --color "#FF6600"
 """
 
 import argparse
 import json
-import os
 import shutil
 import sys
 from datetime import datetime
@@ -64,6 +67,56 @@ CONTENT_TYPES = {
 }
 
 
+def init_brand(name: str, voice: str, color: str, content_root: Path) -> Path:
+    """Create a new brand from _template using string replacement (zero deps)."""
+    template_dir = content_root / "brands" / "_template"
+    if not template_dir.exists():
+        print(f"Error: Brand template not found at {template_dir}")
+        sys.exit(1)
+
+    brand_dir = content_root / "brands" / name
+    if brand_dir.exists():
+        print(f"Error: Brand '{name}' already exists at {brand_dir}")
+        sys.exit(1)
+
+    # Copy template
+    shutil.copytree(
+        template_dir,
+        brand_dir,
+        ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"),
+    )
+    print(f"  [OK] Copied brand template")
+
+    # Update brand.yaml via string replacement (no YAML parser needed)
+    brand_yaml_path = brand_dir / "brand.yaml"
+    if brand_yaml_path.exists():
+        content = brand_yaml_path.read_text(encoding="utf-8")
+        content = content.replace("Your Brand Name", name)
+        content = content.replace('tone: "professional"', f'tone: "{voice}"')
+        if color:
+            content = content.replace('primary_color: "#000000"', f'primary_color: "{color}"')
+        brand_yaml_path.write_text(content, encoding="utf-8")
+        print(f"  [OK] Updated brand.yaml (name={name}, voice={voice}, color={color or 'default'})")
+
+    # Ensure .gitkeep in empty dirs
+    for subdir in ["templates/video", "templates/social", "templates/blog",
+                   "templates/email", "templates/ad-copy", "templates/script",
+                   "agents", "harnesses", "assets", "output"]:
+        d = brand_dir / subdir
+        if d.exists() and not any(d.iterdir()):
+            (d / ".gitkeep").write_text("")
+
+    print(f"\n[DONE] Brand '{name}' created at {brand_dir}")
+    print(f"   Voice: {voice}")
+    print(f"   Color: {color or '#000000 (default)'}")
+    print(f"\nNext steps:")
+    print(f"   1. Edit {brand_yaml_path} with full brand details")
+    print(f"   2. Add brand assets to {brand_dir / 'assets'}")
+    print(f"   3. Create templates in {brand_dir / 'templates'}/[category]/")
+    print(f"   4. Generate content via harnesses")
+    return brand_dir
+
+
 def create_project(name: str, content_type: str, parent_dir: Path) -> Path:
     """Create a new content project directory."""
     if content_type not in CONTENT_TYPES:
@@ -76,15 +129,13 @@ def create_project(name: str, content_type: str, parent_dir: Path) -> Path:
         print(f"Error: Project '{name}' already exists at {project_dir}")
         sys.exit(1)
 
-    # Get the content type config
     config = CONTENT_TYPES[content_type]
-    root_dir = parent_dir.parent  # Content-Creation root
+    root_dir = parent_dir.parent
 
     # Create directory structure
     for subdir in config["dirs"]:
         (project_dir / subdir).mkdir(parents=True, exist_ok=True)
 
-    # Create .gitkeep in empty dirs
     for subdir in config["dirs"]:
         gitkeep = project_dir / subdir / ".gitkeep"
         if not gitkeep.exists():
@@ -102,15 +153,15 @@ def create_project(name: str, content_type: str, parent_dir: Path) -> Path:
                     shutil.copytree(
                         src,
                         dst,
-                        ignore=shutil.ignoring_patterns(
+                        ignore=shutil.ignore_patterns(
                             "__pycache__", ".pytest_cache", "output"
                         ),
                     )
-                    print(f"  ✓ Copied harness: {harness_name}")
+                    print(f"  [OK] Copied harness: {harness_name}")
                 else:
                     print(f"  - Harness already exists: {harness_name}")
 
-    # Create project config
+    # Project config
     project_config = {
         "name": name,
         "type": content_type,
@@ -121,7 +172,6 @@ def create_project(name: str, content_type: str, parent_dir: Path) -> Path:
     }
     (project_dir / "project.json").write_text(json.dumps(project_config, indent=2))
 
-    # Create a minimal README
     readme = f"""# {name}
 
 *{config['description']}*
@@ -142,7 +192,7 @@ python harnesses/meme-video-harness/pipeline.py "https://youtube.com/..." --styl
 """
     (project_dir / "README.md").write_text(readme)
 
-    print(f"\n✅ Content project '{name}' created at {project_dir}")
+    print(f"\n[DONE] Content project '{name}' created at {project_dir}")
     print(f"   Type: {content_type}")
     print(f"   Directories: {len(config['dirs'])}")
     print(f"   Harnesses: {len(config['harnesses'])}")
@@ -151,11 +201,10 @@ python harnesses/meme-video-harness/pipeline.py "https://youtube.com/..." --styl
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Initialize a new content project"
+        description="Initialize a new content project or brand"
     )
     parser.add_argument(
         "--name", "-n",
-        required=True,
         help="Project name (directory name)",
     )
     parser.add_argument(
@@ -169,15 +218,39 @@ def main():
         default="projects",
         help="Parent directory under Content-Creation/ (default: projects/)",
     )
+    parser.add_argument(
+        "--brand", "-b",
+        help="Create a new brand from _template (use instead of --name)",
+    )
+    parser.add_argument(
+        "--voice",
+        default="professional",
+        choices=["professional", "casual", "humorous", "inspirational", "authoritative"],
+        help="Brand voice/tone (default: professional)",
+    )
+    parser.add_argument(
+        "--color",
+        help="Brand primary color (hex, e.g., #FF6600)",
+    )
 
     args = parser.parse_args()
-
-    # Resolve paths relative to Content-Creation root
+    
     script_dir = Path(__file__).parent.resolve()
-    content_root = script_dir.parent  # Content-Creation root
+    content_root = script_dir.parent
+
+    # Brand mode
+    if args.brand:
+        init_brand(args.brand, args.voice, args.color, content_root)
+        return
+
+    # Project mode
+    if not args.name:
+        parser.print_help()
+        print("\nError: Either --name or --brand is required.")
+        sys.exit(1)
+
     parent_dir = content_root / args.parent
     parent_dir.mkdir(exist_ok=True)
-
     create_project(args.name, args.type, parent_dir)
 
 

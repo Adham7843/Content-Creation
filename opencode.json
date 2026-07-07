@@ -5,7 +5,7 @@
     "content-video-producer": {
       "model": "opencode/deepseek-v4-flash-free",
       "variant": "high",
-      "system_prompt": "You produce marketing videos from natural language briefs. Use the 5-stage marketing-video pipeline: take a user's prompt, generate a structured VideoBrief, render it as animated HTML, convert to MP4 with Playwright+FFmpeg, batch variants, and export organized output.",
+      "system_prompt": "You produce marketing videos from natural language briefs. Use the 5-stage marketing-video pipeline: take a user's prompt, generate a structured VideoBrief, render it as animated HTML, convert to MP4 with Playwright+FFmpeg, batch variants, and export organized output. When a brand is specified (e.g., 'for brand X'), check brands/X/brand.yaml for voice/visual config and brands/X/templates/ for brand-specific overrides.",
       "permissions": {
         "bash": {
           "python harnesses/marketing-video-harness/pipeline.py *": "allow",
@@ -17,13 +17,16 @@
         },
         "read": {
           "harnesses/marketing-video-harness/*": "allow",
+          "brands/*": "allow",
           "templates/video/*": "allow",
           "*.md": "allow",
           "*.json": "allow",
+          "*.yaml": "allow",
           "*": "deny"
         },
         "edit": {
           "harnesses/marketing-video-harness/output/*": "allow",
+          "brands/*/output/*": "allow",
           "*": "deny"
         },
         "glob": "allow",
@@ -43,7 +46,7 @@
     "content-meme-producer": {
       "model": "opencode/deepseek-v4-flash-free",
       "variant": "high",
-      "system_prompt": "You produce meme videos from any content source (YouTube, Reddit, text). Use the 5-stage meme-video pipeline: fetch source content, extract AI viral clips with opensource-clipping, apply meme effects with FFmpeg, batch across meme styles, and export organized output. 7 meme styles: brainrot, sigma, corporate_meme, tech_bro, motivational, cringe, dark_humor.",
+      "system_prompt": "You produce meme videos from any content source (YouTube, Reddit, text). Use the 5-stage meme-video pipeline: fetch source content, extract AI viral clips with opensource-clipping, apply meme effects with FFmpeg, batch across meme styles, and export organized output. 7 meme styles: brainrot, sigma, corporate_meme, tech_bro, motivational, cringe, dark_humor. When a brand is specified, use brands/X/brand.yaml for config.",
       "permissions": {
         "bash": {
           "python harnesses/meme-video-harness/pipeline.py *": "allow",
@@ -54,13 +57,16 @@
         },
         "read": {
           "harnesses/meme-video-harness/*": "allow",
+          "brands/*": "allow",
           "templates/video/*": "allow",
           "*.md": "allow",
           "*.json": "allow",
+          "*.yaml": "allow",
           "*": "deny"
         },
         "edit": {
           "harnesses/meme-video-harness/output/*": "allow",
+          "brands/*/output/*": "allow",
           "*": "deny"
         },
         "glob": "allow",
@@ -80,15 +86,20 @@
     "content-writer": {
       "model": "opencode/deepseek-v4-flash-free",
       "variant": "medium",
-      "system_prompt": "You write content: blog posts, social media, email, ad copy, and scripts. Use the templates in templates/ as blueprints. Always ask the user: topic, target audience, tone, platform, and length.",
+      "system_prompt": "You write content: blog posts, social media, email, ad copy, and scripts. Check brands/[brand]/templates/ for brand-specific overrides before falling back to templates/. Always read the brand's brand.yaml for voice/tone guidance when a brand is specified. Always ask the user: topic, brand (if not specified), target audience, tone, platform, and length.",
       "permissions": {
         "read": {
+          "brands/*": "allow",
           "templates/*": "allow",
           "*.md": "allow",
+          "*.yaml": "allow",
+          "*.json": "allow",
           "*": "deny"
         },
         "edit": {
           "output/*": "allow",
+          "brands/*/output/*": "allow",
+          "brands/*/templates/*": "allow",
           "*": "deny"
         },
         "bash": { "*": "deny" },

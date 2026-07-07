@@ -37,6 +37,13 @@
       "model": "opencode/deepseek-v4-flash-free"
     }
   },
+  "brands": {
+    "_template": {
+      "source": "brands/_template/",
+      "description": "Brand template — copy to create a new brand",
+      "structure": ["brand.yaml", "templates/", "agents/", "harnesses/", "assets/", "output/"]
+    }
+  },
   "templates": {
     "video": "templates/video/",
     "social": "templates/social/",
@@ -45,6 +52,7 @@
     "ad-copy": "templates/ad-copy/",
     "script": "templates/script/"
   },
+  "brand_template_resolution": "brand T templates override global templates — check brands/[name]/templates/ first",
   "external_tools": {
     "opensource-clipping": {
       "path": "F:/Notes/Tools/opensource-clipping",
@@ -58,5 +66,5 @@
     }
   },
   "mcps": ["filesystem", "websearch", "gh_grep"],
-  "deploy_components": ["harnesses", "agents", "templates", "config", "opencode.json"]
+  "deploy_components": ["brands", "harnesses", "agents", "templates", "config", "opencode.json"]
 }

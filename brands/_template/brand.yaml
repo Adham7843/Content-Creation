@@ -1,0 +1,78 @@
+# brand.yaml — Content-Creation Brand Configuration
+#
+# To add a new brand:
+#   1. Copy this folder: cp -r brands/_template brands/your-brand
+#   2. Edit brand.yaml with your brand's details
+#   3. Create brand-specific templates in brands/your-brand/templates/
+#   4. Run: python scripts/init_content_project.py --brand your-brand
+#   5. Generate content: python harnesses/marketing-video-harness/pipeline.py "Brief" --brand your-brand
+
+# ── Brand Identity ──────────────────────────────────────
+name: "Your Brand Name"
+description: "Brand description"
+
+# Brand voice & style
+voice:
+  tone: "professional"          # professional, casual, humorous, inspirational, authoritative
+  audience: ""                  # Target audience description
+  values: []                    # Core brand values
+
+# Visual identity (for video and design templates)
+visual:
+  primary_color: "#000000"
+  secondary_color: "#FFFFFF"
+  accent_color: "#0000FF"
+  font_primary: "Inter"
+  font_secondary: "Georgia"
+  logo_path: ""                 # Path to logo file in assets/
+
+# ── Content Configuration ──────────────────────────────
+content_types:                  # Which content types this brand produces
+  video: true
+  social: true
+  blog: true
+  email: true
+  ad_copy: true
+  script: true
+
+# Video defaults (used by video harnesses)
+video:
+  default_duration: 30          # seconds
+  default_aspect_ratio: "16:9"  # 16:9, 9:16, 1:1, 4:5
+  default_template: "product_launch"
+  intro_card: ""                # Path to intro card template
+  outro_card: ""                # Path to outro card template
+  watermark: ""                 # Path to watermark overlay
+
+# Social media defaults
+social:
+  platforms: []                 # twitter, linkedin, instagram, tiktok, facebook
+  hashtags: []                  # Default hashtags
+  posting_schedule: ""          # e.g., "M W F 10am"
+
+# ── Agent Configuration ───────────────────────────────
+# Automatically deployed agents for this brand
+agents:
+  video-producer:
+    enabled: true
+    model: "opencode/deepseek-v4-flash-free"
+    description: "Video content producer for this brand"
+  content-writer:
+    enabled: true
+    model: "opencode/deepseek-v4-flash-free"
+    description: "Content writer for this brand"
+
+# ── Harness References ─────────────────────────────────
+# Which harnesses to use and their brand-specific configs
+harnesses:
+  marketing-video:
+    enabled: true
+    config_overrides:
+      default_template: "product_launch"
+  meme-video:
+    enabled: false
+    config_overrides: {}
+
+# ── Deployment ─────────────────────────────────────────
+target_url: ""                  # Brand website URL
+output_dir: "output"            # Relative to brand directory

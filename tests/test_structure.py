@@ -30,6 +30,7 @@ def test_core_files_exist():
 def test_directories_exist():
     """All required directories must be present."""
     dirs = [
+        "brands/_template",
         "harnesses",
         "agents/_template",
         "templates/video",
@@ -48,6 +49,30 @@ def test_directories_exist():
     ]
     for d in dirs:
         assert (ROOT / d).exists(), f"Missing directory: {d}"
+
+
+def test_brand_template_structure():
+    """Brand _template must have all required subdirs and files."""
+    tmpl = ROOT / "brands" / "_template"
+    assert (tmpl / "brand.yaml").exists(), "Missing brand.yaml"
+    assert (tmpl / "README.md").exists(), "Missing brand README.md"
+    for td in ["templates/video", "templates/social", "templates/blog",
+               "templates/email", "templates/ad-copy", "templates/script",
+               "agents", "harnesses", "assets", "output"]:
+        assert (tmpl / td).exists(), f"Missing brand template dir: {td}"
+
+
+def test_brand_yaml_content():
+    """brand.yaml must have required fields."""
+    import yaml
+    with open(ROOT / "brands" / "_template" / "brand.yaml") as f:
+        brand = yaml.safe_load(f)
+    assert "name" in brand
+    assert "voice" in brand
+    assert "visual" in brand
+    assert "content_types" in brand
+    assert "video" in brand.get("content_types", {})
+    assert "harnesses" in brand
 
 
 def test_video_harnesses_copied():
