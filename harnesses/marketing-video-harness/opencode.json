@@ -1,0 +1,52 @@
+{
+  "agents": {
+    "marketing-video-manager": {
+      "prompt": "{file:./AGENT.md}",
+      "model": "opencode/deepseek-v4-flash-free",
+      "description": "Generate marketing videos from prompts. 5-stage pipeline: spec -> HTML -> render -> batch -> export.",
+      "mode": "all",
+      "permissions": {
+        "bash": {
+          "python pipeline.py *": "allow",
+          "python stage*": "allow",
+          "playwright install chromium": "ask",
+          "pip install *": "ask",
+          "opencode run *": "allow",
+          "ffmpeg *": "allow",
+          "mkdir *": "allow",
+          "*": "deny"
+        },
+        "read": {
+          "output/*": "allow",
+          "templates/*": "allow",
+          "*.py": "allow",
+          "*.md": "allow",
+          "*.json": "allow",
+          "*.html": "allow",
+          "*.mp4": "allow",
+          "*": "deny"
+        },
+        "edit": {
+          "output/*": "allow",
+          "*.py": "allow",
+          "*.html": "allow",
+          "opencode.json": "allow",
+          "*": "deny"
+        },
+        "glob": "allow",
+        "grep": "allow",
+        "webfetch": "allow",
+        "websearch": "allow",
+        "task": "allow",
+        "skill": "allow",
+        "question": "allow",
+        "external_directory": {
+          "F:/Notes/Second_Brain/**": "allow",
+          "F:/Notes/Tools/**": "allow",
+          "*": "ask"
+        },
+        "doom_loop": "ask"
+      }
+    }
+  }
+}

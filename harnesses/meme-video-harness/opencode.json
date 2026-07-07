@@ -1,0 +1,47 @@
+{
+  "agents": {
+    "meme-video-manager": {
+      "prompt": "{file:./AGENT.md}",
+      "model": "opencode/deepseek-v4-flash-free",
+      "description": "Generate viral meme videos from any content. Wraps opensource-clipping + brainrotbot for AI-powered clip extraction and meme styling.",
+      "mode": "all",
+      "permissions": {
+        "bash": {
+          "python pipeline.py *": "allow",
+          "pip install *": "ask",
+          "git clone *": "ask",
+          "winget install *": "ask",
+          "mkdir *": "allow",
+          "*": "deny"
+        },
+        "read": {
+          "output/*": "allow",
+          "*.py": "allow",
+          "*.md": "allow",
+          "*.json": "allow",
+          "*.mp4": "allow",
+          "F:/Notes/Tools/**": "allow",
+          "*": "deny"
+        },
+        "edit": {
+          "output/*": "allow",
+          "*.py": "allow",
+          "*": "deny"
+        },
+        "glob": "allow",
+        "grep": "allow",
+        "webfetch": "allow",
+        "websearch": "allow",
+        "task": "allow",
+        "skill": "allow",
+        "question": "allow",
+        "external_directory": {
+          "F:/Notes/Second_Brain/**": "allow",
+          "F:/Notes/Tools/**": "allow",
+          "*": "ask"
+        },
+        "doom_loop": "ask"
+      }
+    }
+  }
+}

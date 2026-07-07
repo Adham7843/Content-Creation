@@ -1,0 +1,22 @@
+{
+  "agents": {
+    "content-agent-name": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "variant": "medium",
+      "system_prompt": "{file:./AGENT.md}",
+      "permissions": {
+        "read": { "templates/*": "allow", "harnesses/*": "allow", "*": "ask" },
+        "edit": { "output/*": "allow", "*": "deny" },
+        "bash": { "*": "ask" },
+        "glob": "allow",
+        "grep": "allow",
+        "webfetch": "allow",
+        "websearch": "allow",
+        "question": "allow",
+        "doom_loop": "ask"
+      },
+      "mcps": ["filesystem", "websearch"],
+      "description": "[Brief description]"
+    }
+  }
+}

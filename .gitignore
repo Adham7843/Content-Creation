@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.user
+
+# Project
+output/videos/
+output/scripts/
+output/social/
+output/blog/
+output/email/
+data/raw/
+data/processed/
+
+# Harness outputs (large generated media)
+harnesses/*/output/
+harnesses/*/__pycache__/

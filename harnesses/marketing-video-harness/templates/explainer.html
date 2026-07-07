@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explainer Video</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    width: 100vw; height: 100vh;
+    background: var(--bg, #0f0f23);
+    color: #fff;
+}
+.scene {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 8vw;
+    opacity: 0;
+}
+.scene h1 { font-size: 4.5vw; font-weight: 800; margin-bottom: 2vh; }
+.scene h2 { font-size: 3.5vw; font-weight: 700; margin-bottom: 2vh; }
+.scene p { font-size: 2vw; opacity: 0.8; max-width: 70%; margin-bottom: 2vh; }
+.steps { display: flex; gap: 3vw; }
+.step { text-align: center; max-width: 22vw; }
+.step-num { 
+    width: 5vw; height: 5vw; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary, #6C63FF), var(--secondary, #FF6584));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5vw; font-weight: 800; margin: 0 auto 2vh;
+}
+.step h3 { font-size: 1.8vw; margin-bottom: 1vh; }
+.step p { font-size: 1.2vw; opacity: 0.7; }
+.cta-button {
+    display: inline-block; padding: 2.5vh 5vw; font-size: 2.5vw;
+    font-weight: 700; color: #fff;
+    background: linear-gradient(135deg, var(--primary, #6C63FF), var(--secondary, #FF6584));
+    border-radius: 100px; text-decoration: none;
+}
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes slideUp { 0% { opacity: 0; transform: translateY(60px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes scaleUp { 0% { opacity: 0; transform: scale(0.6); } 100% { opacity: 1; transform: scale(1); } }
+.bg-glow {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(ellipse at 30% 50%, var(--primary, #6C63FF)22 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, var(--secondary, #FF6584)22 0%, transparent 50%);
+    animation: fadeIn 2s ease; z-index: 0;
+}
+.scene { z-index: 1; }
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<div class="scene" data-anim="slideUp" data-delay="0" data-duration="3000">
+    <h1>{{PROBLEM}}</h1>
+</div>
+
+<div class="scene" data-anim="fadeIn" data-delay="3500" data-duration="3000">
+    <h2>{{SOLUTION_INTRO}}</h2>
+</div>
+
+<div class="scene" data-anim="slideUp" data-delay="7000" data-duration="6000">
+    <h2>{{STEPS_HEADING}}</h2>
+    <div class="steps">
+        <div class="step"><div class="step-num">1</div><h3>{{STEP1_TITLE}}</h3><p>{{STEP1_DESC}}</p></div>
+        <div class="step"><div class="step-num">2</div><h3>{{STEP2_TITLE}}</h3><p>{{STEP2_DESC}}</p></div>
+        <div class="step"><div class="step-num">3</div><h3>{{STEP3_TITLE}}</h3><p>{{STEP3_DESC}}</p></div>
+    </div>
+</div>
+
+<div class="scene" data-anim="scaleUp" data-delay="14000" data-duration="4000">
+    <h1>{{CTA_HEADLINE}}</h1>
+    <a class="cta-button" href="{{CTA_URL}}">{{CTA_TEXT}}</a>
+</div>
+
+<script>
+document.querySelectorAll('.scene').forEach(scene => {
+    const anim = scene.dataset.anim || 'fadeIn';
+    const delay = parseInt(scene.dataset.delay) || 0;
+    const dur = parseInt(scene.dataset.duration) || 3000;
+    const animMap = { fadeIn:'fadeIn', slideUp:'slideUp', scaleUp:'scaleUp' };
+    scene.style.animation = `${animMap[anim]||'fadeIn'} ${dur}ms ${delay}ms both`;
+});
+setTimeout(() => { document.body.style.opacity = '0.6'; }, 20000);
+</script>
+</body>
+</html>

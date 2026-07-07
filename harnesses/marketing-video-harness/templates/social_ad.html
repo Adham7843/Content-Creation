@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Ad</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    overflow: hidden;
+    width: 100vw; height: 100vh;
+    background: var(--bg, #1a1a2e);
+    color: #fff;
+}
+.scene {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 6vw;
+    opacity: 0;
+}
+.scene h1 { font-size: 6vw; font-weight: 800; margin-bottom: 2vh; line-height: 1.15; }
+.scene h2 { font-size: 4.5vw; font-weight: 700; margin-bottom: 2vh; }
+.scene p { font-size: 3vw; opacity: 0.85; max-width: 85%; }
+.cta-button {
+    display: inline-block; padding: 3vh 8vw; font-size: 3.5vw;
+    font-weight: 800; color: #fff;
+    background: linear-gradient(135deg, var(--primary, #6C63FF), var(--secondary, #FF6584));
+    border-radius: 100px; text-decoration: none;
+    box-shadow: 0 6px 24px rgba(108, 99, 255, 0.5);
+}
+.music-note { position: absolute; font-size: 2vw; opacity: 0.15; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes slideUp { 0% { opacity: 0; transform: translateY(60px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes scaleUp { 0% { opacity: 0; transform: scale(0.6); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes bgPulse { 0%,100% { opacity: 0.05; } 50% { opacity: 0.15; } }
+.bg-glow {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, var(--primary, #6C63FF) 0%, transparent 60%);
+    animation: bgPulse 3s ease-in-out infinite; z-index: 0;
+}
+.scene { z-index: 1; }
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<div class="scene" data-anim="slideUp" data-delay="0" data-duration="2500">
+    <h1>{{HOOK}}</h1>
+</div>
+
+<div class="scene" data-anim="fadeIn" data-delay="3000" data-duration="3500">
+    <h2>{{VALUE_PROP}}</h2>
+    <p>{{SUB_TEXT}}</p>
+</div>
+
+<div class="scene" data-anim="scaleUp" data-delay="7000" data-duration="3000">
+    <h1>{{CTA_HEADLINE}}</h1>
+    <a class="cta-button" href="{{CTA_URL}}">{{CTA_TEXT}}</a>
+</div>
+
+<script>
+document.querySelectorAll('.scene').forEach(scene => {
+    const anim = scene.dataset.anim || 'fadeIn';
+    const delay = parseInt(scene.dataset.delay) || 0;
+    const dur = parseInt(scene.dataset.duration) || 3000;
+    const animMap = { fadeIn:'fadeIn', slideUp:'slideUp', scaleUp:'scaleUp' };
+    scene.style.animation = `${animMap[anim]||'fadeIn'} ${dur}ms ${delay}ms both`;
+});
+setTimeout(() => { document.body.style.opacity = '0.6'; }, 12000);
+</script>
+</body>
+</html>

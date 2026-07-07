@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testimonial</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    width: 100vw; height: 100vh;
+    background: var(--bg, #1a1a2e); color: #fff;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 8vw;
+}
+.quote { font-size: 3.5vw; font-weight: 300; font-style: italic; max-width: 75%; margin-bottom: 4vh; line-height: 1.4; opacity: 0; animation: fadeIn 2s 0.5s both; }
+.author { font-size: 2vw; font-weight: 600; opacity: 0; animation: fadeIn 2s 2s both; }
+.role { font-size: 1.5vw; opacity: 0.5; margin-bottom: 4vh; opacity: 0; animation: fadeIn 2s 2.5s both; }
+.logo { font-size: 3vw; font-weight: 800; letter-spacing: 0.1em; opacity: 0; animation: fadeIn 2s 3.5s both; background: linear-gradient(135deg, var(--primary, #6C63FF), var(--secondary, #FF6584)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.stars { font-size: 3vw; margin-bottom: 2vh; opacity: 0; animation: fadeIn 2s 0s both; color: #FFD700; }
+@keyframes fadeIn { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="stars">{{STARS}}</div>
+<div class="quote">{{QUOTE}}</div>
+<div class="author">{{AUTHOR}}</div>
+<div class="role">{{ROLE}}</div>
+<div class="logo">{{BRAND}}</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+{
+  "$schema": "../SaaS-Security-Auditor/project-manifest.json",
+  "manifest_version": "1.0.0",
+  "name": "Content-Creation",
+  "description": "Everything content: video production, copywriting, social media, email, blog, ad creation",
+  "root": "SAAS_Businesses/Content-Creation",
+  "harnesses": {
+    "marketing-video-harness": {
+      "source": "harnesses/marketing-video-harness/",
+      "type": "pipeline",
+      "stages": 5,
+      "description": "Prompt → spec → HTML → render MP4 → batch variants → export",
+      "dependencies": ["playwright", "ffmpeg", "opencode CLI"]
+    },
+    "meme-video-harness": {
+      "source": "harnesses/meme-video-harness/",
+      "type": "pipeline",
+      "stages": 5,
+      "description": "Source → AI clip extraction → meme effects → batch styles → export",
+      "dependencies": ["ffmpeg", "opensource-clipping"]
+    }
+  },
+  "agents": {
+    "content-video-producer": {
+      "config": "opencode.json",
+      "description": "Generate marketing videos from natural language prompts",
+      "model": "opencode/deepseek-v4-flash-free"
+    },
+    "content-meme-producer": {
+      "config": "opencode.json",
+      "description": "Generate meme videos from any content source",
+      "model": "opencode/deepseek-v4-flash-free"
+    },
+    "content-writer": {
+      "config": "opencode.json",
+      "description": "Write blog, social, email, ad copy, and scripts",
+      "model": "opencode/deepseek-v4-flash-free"
+    }
+  },
+  "templates": {
+    "video": "templates/video/",
+    "social": "templates/social/",
+    "blog": "templates/blog/",
+    "email": "templates/email/",
+    "ad-copy": "templates/ad-copy/",
+    "script": "templates/script/"
+  },
+  "external_tools": {
+    "opensource-clipping": {
+      "path": "F:/Notes/Tools/opensource-clipping",
+      "description": "AI auto-clipper (Whisper + Gemini + FFmpeg)",
+      "used_by": ["meme-video-harness"]
+    },
+    "ffmpeg": {
+      "path": "system",
+      "description": "Video encoding and effects",
+      "used_by": ["marketing-video-harness", "meme-video-harness"]
+    }
+  },
+  "mcps": ["filesystem", "websearch", "gh_grep"],
+  "deploy_components": ["harnesses", "agents", "templates", "config", "opencode.json"]
+}

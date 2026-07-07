@@ -1,0 +1,122 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "schema_version": "1.0.0",
+  "agents": {
+    "content-video-producer": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "variant": "high",
+      "system_prompt": "You produce marketing videos from natural language briefs. Use the 5-stage marketing-video pipeline: take a user's prompt, generate a structured VideoBrief, render it as animated HTML, convert to MP4 with Playwright+FFmpeg, batch variants, and export organized output.",
+      "permissions": {
+        "bash": {
+          "python harnesses/marketing-video-harness/pipeline.py *": "allow",
+          "playwright install chromium": "ask",
+          "pip install *": "ask",
+          "ffmpeg *": "allow",
+          "mkdir *": "allow",
+          "*": "deny"
+        },
+        "read": {
+          "harnesses/marketing-video-harness/*": "allow",
+          "templates/video/*": "allow",
+          "*.md": "allow",
+          "*.json": "allow",
+          "*": "deny"
+        },
+        "edit": {
+          "harnesses/marketing-video-harness/output/*": "allow",
+          "*": "deny"
+        },
+        "glob": "allow",
+        "grep": "allow",
+        "webfetch": "allow",
+        "websearch": "allow",
+        "task": "allow",
+        "question": "allow",
+        "external_directory": {
+          "F:/Notes/Tools/**": "allow",
+          "*": "ask"
+        },
+        "doom_loop": "ask"
+      },
+      "description": "Content Video Producer — generate marketing videos from natural language prompts"
+    },
+    "content-meme-producer": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "variant": "high",
+      "system_prompt": "You produce meme videos from any content source (YouTube, Reddit, text). Use the 5-stage meme-video pipeline: fetch source content, extract AI viral clips with opensource-clipping, apply meme effects with FFmpeg, batch across meme styles, and export organized output. 7 meme styles: brainrot, sigma, corporate_meme, tech_bro, motivational, cringe, dark_humor.",
+      "permissions": {
+        "bash": {
+          "python harnesses/meme-video-harness/pipeline.py *": "allow",
+          "pip install *": "ask",
+          "ffmpeg *": "allow",
+          "mkdir *": "allow",
+          "*": "deny"
+        },
+        "read": {
+          "harnesses/meme-video-harness/*": "allow",
+          "templates/video/*": "allow",
+          "*.md": "allow",
+          "*.json": "allow",
+          "*": "deny"
+        },
+        "edit": {
+          "harnesses/meme-video-harness/output/*": "allow",
+          "*": "deny"
+        },
+        "glob": "allow",
+        "grep": "allow",
+        "webfetch": "allow",
+        "websearch": "allow",
+        "task": "allow",
+        "question": "allow",
+        "external_directory": {
+          "F:/Notes/Tools/**": "allow",
+          "*": "ask"
+        },
+        "doom_loop": "ask"
+      },
+      "description": "Content Meme Producer — generate viral meme videos from any content source"
+    },
+    "content-writer": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "variant": "medium",
+      "system_prompt": "You write content: blog posts, social media, email, ad copy, and scripts. Use the templates in templates/ as blueprints. Always ask the user: topic, target audience, tone, platform, and length.",
+      "permissions": {
+        "read": {
+          "templates/*": "allow",
+          "*.md": "allow",
+          "*": "deny"
+        },
+        "edit": {
+          "output/*": "allow",
+          "*": "deny"
+        },
+        "bash": { "*": "deny" },
+        "glob": "allow",
+        "grep": "allow",
+        "webfetch": "allow",
+        "websearch": "allow",
+        "question": "allow",
+        "doom_loop": "deny"
+      },
+      "description": "Content Writer — blog, social, email, ad copy, and script writing"
+    }
+  },
+  "mcps": {
+    "filesystem": {
+      "type": "builtin",
+      "enabled": true,
+      "description": "Read and write files in the project"
+    },
+    "websearch": {
+      "type": "builtin",
+      "enabled": true,
+      "description": "Search the web for content research"
+    },
+    "gh_grep": {
+      "type": "builtin",
+      "enabled": true,
+      "description": "Search GitHub for content examples and templates"
+    }
+  }
+}

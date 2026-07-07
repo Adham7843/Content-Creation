@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Launch</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
+    width: 100vw; height: 100vh;
+    background: var(--bg, #1a1a2e);
+    color: #fff;
+    --primary: #6C63FF;
+    --secondary: #FF6584;
+}
+.scene {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 8vw;
+    opacity: 0;
+}
+.scene h1 { font-size: 5vw; font-weight: 800; margin-bottom: 2vh; line-height: 1.1; }
+.scene h2 { font-size: 3.5vw; font-weight: 700; margin-bottom: 3vh; }
+.scene p { font-size: 2vw; opacity: 0.85; max-width: 70%; margin-bottom: 3vh; }
+.features { display: flex; gap: 3vw; flex-wrap: wrap; justify-content: center; }
+.feature { text-align: center; max-width: 20vw; }
+.feature .icon { font-size: 4vw; margin-bottom: 1vh; }
+.feature h3 { font-size: 2vw; margin-bottom: 0.5vh; }
+.feature p { font-size: 1.2vw; opacity: 0.7; }
+.cta-button {
+    display: inline-block; padding: 2.5vh 5vw; font-size: 2.5vw;
+    font-weight: 700; color: #fff;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 100px; text-decoration: none;
+    box-shadow: 0 8px 32px rgba(108, 99, 255, 0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.cta-button:hover { transform: scale(1.05); box-shadow: 0 12px 48px rgba(108, 99, 255, 0.6); }
+.badge {
+    display: inline-block; padding: 1vh 2vw; font-size: 1.2vw;
+    background: rgba(255,255,255,0.1); border-radius: 100px;
+    margin-bottom: 3vh; letter-spacing: 0.1em; text-transform: uppercase;
+}
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes slideUp { 0% { opacity: 0; transform: translateY(80px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes slideLeft { 0% { opacity: 0; transform: translateX(80px); } 100% { opacity: 1; transform: translateX(0); } }
+@keyframes scaleUp { 0% { opacity: 0; transform: scale(0.7); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+@keyframes bgPulse { 0%,100% { opacity: 0.04; } 50% { opacity: 0.1; } }
+.bg-glow {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 60%);
+    animation: bgPulse 4s ease-in-out infinite; z-index: 0;
+}
+.scene { z-index: 1; }
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<!-- Scene 1: Intro -->
+<div class="scene" data-anim="slideUp" data-delay="0" data-duration="3000">
+    <div class="badge">{{BADGE}}</div>
+    <h1>{{HEADLINE}}</h1>
+    <p>{{SUBTITLE}}</p>
+</div>
+
+<!-- Scene 2: Value -->
+<div class="scene" data-anim="fadeIn" data-delay="3500" data-duration="4000">
+    <h2>{{VALUE_HEADING}}</h2>
+    <p>{{VALUE_TEXT}}</p>
+</div>
+
+<!-- Scene 3: Features -->
+<div class="scene" data-anim="slideUp" data-delay="8000" data-duration="5000">
+    <h2>{{FEATURES_HEADING}}</h2>
+    <div class="features">
+        <div class="feature"><div class="icon">{{ICON1}}</div><h3>{{FEAT1_TITLE}}</h3><p>{{FEAT1_DESC}}</p></div>
+        <div class="feature"><div class="icon">{{ICON2}}</div><h3>{{FEAT2_TITLE}}</h3><p>{{FEAT2_DESC}}</p></div>
+        <div class="feature"><div class="icon">{{ICON3}}</div><h3>{{FEAT3_TITLE}}</h3><p>{{FEAT3_DESC}}</p></div>
+    </div>
+</div>
+
+<!-- Scene 4: CTA -->
+<div class="scene" data-anim="scaleUp" data-delay="14000" data-duration="4000">
+    <h1>{{CTA_HEADLINE}}</h1>
+    <p>{{CTA_SUBTITLE}}</p>
+    <a class="cta-button" href="{{CTA_URL}}">{{CTA_TEXT}}</a>
+</div>
+
+<script>
+const scenes = document.querySelectorAll('.scene');
+const animMap = {
+    fadeIn: 'fadeIn', slideUp: 'slideUp', slideLeft: 'slideLeft',
+    scaleUp: 'scaleUp', bounce: 'bounce'
+};
+scenes.forEach(scene => {
+    const animName = animMap[scene.dataset.anim] || 'fadeIn';
+    const delay = parseInt(scene.dataset.delay) || 0;
+    const duration = parseInt(scene.dataset.duration) || 3000;
+    scene.style.animation = `${animName} ${duration}ms ${delay}ms both`;
+});
+const lastScene = scenes[scenes.length - 1];
+const lastDelay = parseInt(lastScene.dataset.delay) || 0;
+const lastDur = parseInt(lastScene.dataset.duration) || 4000;
+setTimeout(() => { document.body.style.opacity = '0.6'; }, lastDelay + lastDur + 500);
+</script>
+</body>
+</html>

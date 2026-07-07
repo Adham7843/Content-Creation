@@ -1,0 +1,24 @@
+{
+  "forge_name": "marketing-video-harness",
+  "forge_date": "2026-07-08T00:28:00Z",
+  "harness_type": "pipeline",
+  "version": "1.0.0",
+  "description": "5-stage async pipeline: prompt -> spec -> HTML -> render MP4/GIF -> batch variants -> export. Generates marketing videos from natural language.",
+  "source_tools": [
+    {"name": "HtmlToVideoPixie", "repo": "FatFatYoung/HtmlToVideo_Pixie", "stars": 1, "license": "MIT", "used_for": "Core rendering pattern: prompt -> AI HTML -> Playwright -> FFmpeg -> MP4"},
+    {"name": "RenderGarden", "repo": "NovusGFX/RenderGarden", "stars": 4, "license": "MIT", "used_for": "HTML-to-MP4 frame capture pattern with pyppeteer"},
+    {"name": "Remotion", "repo": "remotion-dev/remotion", "stars": 52400, "license": "Special", "used_for": "Architecture reference — React components -> video, agent skills, templates"},
+    {"name": "Motion Canvas", "repo": "motion-canvas/motion-canvas", "stars": 18800, "license": "MIT", "used_for": "Programmatic animation reference"}
+  ],
+  "stages": [
+    {"name": "spec", "description": "Chat agent -> structured VideoBrief JSON"},
+    {"name": "html", "description": "VideoBrief -> animated HTML/CSS"},
+    {"name": "render", "description": "HTML -> MP4/GIF via Playwright + FFmpeg"},
+    {"name": "batch", "description": "1 spec -> N variants (colors, CTAs, ratios)"},
+    {"name": "export", "description": "Organize outputs + metadata.json"}
+  ],
+  "templates": ["product_launch", "social_ad", "explainer", "testimonial", "pricing_promo"],
+  "batch_variations": {"color_schemes": 6, "cta_variations": 8, "aspect_ratios": 4, "durations": 3},
+  "files": ["pipeline.py", "config.py", "stage1_spec.py", "stage2_html.py", "stage3_render.py", "stage4_batch.py", "stage5_export.py", "templates/*.html", "AGENT.md", "README.md", "opencode.json", "META.json"],
+  "dependencies": {"python": ["playwright"], "system": ["ffmpeg", "opencode CLI"], "optional": []}
+}
